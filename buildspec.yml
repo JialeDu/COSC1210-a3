@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 version: 0.2
 
 phases:
@@ -22,3 +23,29 @@ phases:
 artifacts:
   files:
     - imagedefinitions.json
+=======
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging into Amazon ECR...
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+
+  build:
+    commands:
+      - echo Build Docker image...
+      - docker build -t ecs-flask-app .
+      - docker tag ecs-flask-app:latest $ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/du-ecs-assignment3:latest
+
+  post_build:
+    commands:
+      - echo Pushing image...
+      - docker push $ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/du-ecs-assignment3:latest
+      - echo Writing imagedefinitions...
+      - printf '[{"name":"ecs-flask","imageUri":"%s"}]' $ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/du-ecs-assignment3:latest > imagedefinitions.json
+
+artifacts:
+  files:
+    - imagedefinitions.json
+>>>>>>> df9062f0987cb9d477180968b9cfc1b2885ff785
