@@ -1,0 +1,6 @@
+[
+  {
+    "name": "du-assignment3-container",
+    "imageUri": "434749277268.dkr.ecr.us-east-1.amazonaws.com/du-ecs-assignment3:latest"
+  }
+]
